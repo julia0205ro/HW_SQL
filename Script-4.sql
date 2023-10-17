@@ -134,14 +134,89 @@ full join new_roles nr on nr.id = re.role_id
 where role_name ilike '%Junior%QA%engineer%'
 
 -- 21. Вывести среднюю зарплату всех Junior специалистов
+select avg(monthly_salary) from new_salary ns 
+full join employee_salary es on ns.id = es.salary_id 
+full join roles_employee re on re.employee_id = es.employee_id 
+full join new_roles nr on nr.id = re.role_id 
+where role_name ilike '%Junior%'
+
 -- 22. Вывести сумму зарплат JS разработчиков
+select sum(monthly_salary) from new_salary ns 
+full join employee_salary es on ns.id = es.salary_id 
+full join roles_employee re on re.employee_id = es.employee_id 
+full join new_roles nr on nr.id = re.role_id 
+where role_name ilike '%JavaScript developer%'
+
 -- 23. Вывести минимальную ЗП QA инженеров
+select min(monthly_salary) from new_salary ns 
+full join employee_salary es on ns.id = es.salary_id 
+full join roles_employee re on re.employee_id = es.employee_id 
+full join new_roles nr on nr.id = re.role_id 
+where role_name ilike '%qa engineer%'
+
 -- 24. Вывести максимальную ЗП QA инженеров
+select max(monthly_salary) from new_salary ns 
+full join employee_salary es on ns.id = es.salary_id 
+full join roles_employee re on re.employee_id = es.employee_id 
+full join new_roles nr on nr.id = re.role_id 
+where role_name ilike '%qa engineer%'
+
 -- 25. Вывести количество QA инженеров
+select count(re.id) from roles_employee re 
+join new_roles nr on re.role_id = nr.id 
+where role_name ilike '%qa engineer%'
+
 -- 26. Вывести количество Middle специалистов.
+select count(re.id) from roles_employee re 
+join new_roles nr on re.role_id = nr.id 
+where role_name ilike '%middle%'
+
 -- 27. Вывести количество разработчиков
+select count(re.id) from roles_employee re 
+join new_roles nr on re.role_id = nr.id 
+where role_name ilike '%developer%'
+
 -- 28. Вывести фонд (сумму) зарплаты разработчиков.
+select sum(monthly_salary) from new_salary ns 
+left join employee_salary es on ns.id = es.salary_id 
+left join roles_employee re on re.employee_id = es.employee_id 
+left join new_roles nr on nr.id = re.role_id 
+where role_name ilike '%%developer'
+
 -- 29. Вывести имена, должности и ЗП всех специалистов по возрастанию
--- 30. Вывести имена, должности и ЗП всех специалистов по возрастанию у специалистов у которых ЗП от 1700 до 2300
--- 31. Вывести имена, должности и ЗП всех специалистов по возрастанию у специалистов у которых ЗП меньше 2300
--- 32. Вывести имена, должности и ЗП всех специалистов по возрастанию у специалистов у которых ЗП равна 1100, 1500, 2000
+select employee_name, role_name, monthly_salary from employees e 
+left join roles_employee re on e.id = re.employee_id 
+left join new_roles nr on nr.id = re.role_id 
+left join employee_salary es on es.employee_id = re.employee_id 
+left join new_salary ns on ns.id = es.salary_id 
+order by(monthly_salary) asc
+
+-- 30. Вывести имена, должности и ЗП всех специалистов по возрастанию 
+--у специалистов у которых ЗП от 1700 до 2300
+select employee_name, role_name, monthly_salary from employees e 
+left join roles_employee re on e.id = re.employee_id 
+left join new_roles nr on nr.id = re.role_id 
+left join employee_salary es on es.employee_id = re.employee_id 
+left join new_salary ns on ns.id = es.salary_id 
+where monthly_salary between 1700 and 2300
+order by(monthly_salary) asc
+
+-- 31. Вывести имена, должности и ЗП всех специалистов по возрастанию 
+--у специалистов у которых ЗП меньше 2300
+select employee_name, role_name, monthly_salary from employees e 
+left join roles_employee re on e.id = re.employee_id 
+left join new_roles nr on nr.id = re.role_id 
+left join employee_salary es on es.employee_id = re.employee_id 
+left join new_salary ns on ns.id = es.salary_id 
+where monthly_salary < 2300
+order by(monthly_salary) asc
+
+-- 32. Вывести имена, должности и ЗП всех специалистов по возрастанию 
+--у специалистов у которых ЗП равна 1100, 1500, 2000
+select employee_name, role_name, monthly_salary from employees e 
+left join roles_employee re on e.id = re.employee_id 
+left join new_roles nr on nr.id = re.role_id 
+left join employee_salary es on es.employee_id = re.employee_id 
+left join new_salary ns on ns.id = es.salary_id 
+where monthly_salary in (1100, 1500, 2000)
+order by(monthly_salary) asc
